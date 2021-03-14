@@ -1,0 +1,195 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+#startGame {
+  width: 650px;
+  height: 385px;
+  border: 1px solid #ccc;
+  position: absolute;
+  background-color: #fff;
+  z-index: 10;
+  border-radius: 1em;
+  background: url(../icon/cta.png) no-repeat center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#startGame > .title {
+  height: 80px;
+  line-height: 80px;
+  font-size: 30px;
+  margin-left: 20px;
+}
+#startGame > .start {
+  width: 110px;
+  height: 40px;
+  background-color: #1A73E8;
+  position: absolute;
+  bottom: 18px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  border-radius: .5em;
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+  line-height: 40px;
+  cursor: pointer;
+}
+#mine {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.mineHead { 
+  height: 60px;
+  background-color: #4A752C;
+  position: relative;
+}
+table {
+  border-spacing: 0;
+  background-color: #E5C29F;
+}
+td {
+  padding: 0;
+  font-weight: bold;
+  text-align: center;
+}
+.tdHover:hover {
+  background-color: rgb(185, 221, 119) !important;
+}
+.clickHover:hover {
+  background-color: rgb(236,209,183) !important;
+}
+table tr:nth-child(odd) td:nth-child(odd), 
+table tr:nth-child(even) td:nth-child(even) {
+  background-color: #D7B899;
+}
+.difficult {
+  width: 100px;
+  height: 30px;
+  font-size: 18px;
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  border-radius: .3em;
+  padding-left: 2px;
+  font-weight: bold;
+  outline: none;
+  border: none;
+}
+.message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: #fff;
+}
+.message img {
+  width: 35px;
+  vertical-align: text-bottom;
+}
+.flag {
+  margin-right: 10px;
+}
+.mine {
+  background: red url(../icon/mine.png) no-repeat center;
+  background-size: contain;
+}
+.placeFlag {
+  background: red url(../icon/flag_icon.png) no-repeat center;
+  background-size: contain;
+}
+.overBg {
+  background-color: rgba(0, 0, 0, .4);
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: -100%;
+  left: -121%;
+  opacity: .5;
+}
+.overWicket {
+  background: url(../icon/lose_screen.png) no-repeat bottom;
+  background-size: contain;
+  width: 300px;
+  height: 225px;
+  background-color: #4DC1F9;
+  border-radius: .5em;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.againBtn {
+  width: 300px;
+  height: 65px;
+  background-color: #4A752C;
+  border-radius: .5em;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 20%);
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  line-height: 65px;
+}
+.clockIcon, .trophyIcon {
+  width: 60px;
+  height: 100px;
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: contain;
+  position: absolute;
+  top: 12%;
+  font-size: 20px;
+  color: #fff;
+  vertical-align: bottom;
+}
+.clockIcon {
+  left: 20%;
+  background-image: url(../icon/clock_icon.png);
+  
+}
+.trophyIcon {
+  left: 60%;
+  background-image: url(../icon/trophy_icon.png);
+}
+.clockIcon e, .trophyIcon e {
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  font-weight: bold;
+}
+
+
+.zero {
+  color: blue;
+}
+.two {
+  color: Green;
+}
+.three {
+  color: red;
+}
+.four {
+  color: purple;
+}
+.five {
+  color: maroon;
+}
+.six {
+  color: turquoise;
+}
+.seven {
+  color: black;
+}
+.eight {
+  color: gray;
+}
