@@ -3,12 +3,12 @@ class Mines {
     this.tr = tr; 
     this.td = td;
     this.mineNumber = mineNumber; //雷的数量
-    this.wh = wh;
+    this.wh = wh; //td宽度
 
     this.squares = [];  //存储所有方块的信息
     this.tdDoms = []; //存储所有方块的dom
-    this.surplusMineNum = mineNumber;
-    this.timeStart = false;
+    this.surplusMineNum = mineNumber; //剩余雷的数量
+    this.timeStart = false; 
     this.clearTime = null;
     this.allNum = tr * td;
     
@@ -115,7 +115,7 @@ class Mines {
     var arroundPlaces = [];
     for (var i = x - 1; i <= x + 1; i ++) {
       for (var j = y - 1; j <= y + 1; j ++) {
-        if (i < 0 || j < 0 || i > this.td - 1 || j > this.tr - 1 || (i == x && j == y) || this.squares[j][i].type == 'mine') {
+        if (i < 0 || j < 0 || i > this.td - 1 || j > this.tr - 1 || (i == x && j == y)) {
           continue;
         }
         arroundPlaces.push([j, i]);
@@ -155,8 +155,76 @@ class Mines {
     ev.preventDefault();
     const This = this;
     let color = ['zero', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight']
+    var clickTd = this.squares[obj.pos[0]][obj.pos[1]];
+    function clickTdBgc(clickTd, obj) {  
+      if (clickTd.x % 2 == 0) {
+        if (clickTd.y % 2 == 0) {
+          obj.style.backgroundColor = '#E5C29F';
+        }else {
+          obj.style.backgroundColor = '#D7B899';
+        }
+      }else {
+        if (clickTd.y % 2 == 0) {
+          obj.style.backgroundColor = '#D7B899';
+        }else {
+          obj.style.backgroundColor = '#E5C29F';
+        }
+      }
+    }
+    function getTdAround(square, middle = false) {  
+      let squareAround = This.getAround(square);
+      for (let i = 0; i < squareAround.length; i ++) {
+        let x = squareAround[i][0],
+            y = squareAround[i][1];
+        if (middle) {
+          if (!This.tdDoms[x][y].flag && !This.tdDoms[x][y].classList.contains('placeFlag')) { 
+            This.tdDoms[x][y].flag = true;
+            if (This.squares[x][y].value == 0) {
+              This.allNum --;
+              This.tdDoms[x][y].classList.remove('tdHover');
+              This.tdDoms[x][y].classList.remove('clickHover');
+              getTdAround(This.squares[x][y], true);
+              clickTdBgc(This.squares[x][y], This.tdDoms[x][y]);
+            } else if (This.squares[x][y].value > 0) {
+              This.allNum --;
+              This.tdDoms[x][y].classList.add('clickHover');
+              This.tdDoms[x][y].innerHTML = This.squares[x][y].value;
+              This.tdDoms[x][y].classList.add(color[This.squares[x][y].value - 1]);
+              clickTdBgc(This.squares[x][y], This.tdDoms[x][y]);
+            }
+            // console.log(This.allNum);
+            if (This.tdDoms[x][y].classList.contains('placeFlag')) { 
+              This.tdDoms[x][y].classList.remove('placeFlag');
+              This.flagNum.innerText ++;
+            }
+          }
+        }else {
+          if (!This.tdDoms[x][y].flag) { 
+            This.tdDoms[x][y].flag = true;
+            if (This.squares[x][y].value == 0) {
+              This.allNum --;
+              This.tdDoms[x][y].classList.remove('tdHover');
+              This.tdDoms[x][y].classList.remove('clickHover');
+              getTdAround(This.squares[x][y]);
+              clickTdBgc(This.squares[x][y], This.tdDoms[x][y]);
+            } else if (This.squares[x][y].value > 0) {
+              This.allNum --;
+              This.tdDoms[x][y].classList.add('clickHover');
+              This.tdDoms[x][y].innerHTML = This.squares[x][y].value;
+              This.tdDoms[x][y].classList.add(color[This.squares[x][y].value - 1]);
+              clickTdBgc(This.squares[x][y], This.tdDoms[x][y]);
+            }
+            // console.log(This.allNum);
+            if (This.tdDoms[x][y].classList.contains('placeFlag')) { 
+              This.tdDoms[x][y].classList.remove('placeFlag');
+              This.flagNum.innerText ++;
+            }
+          }
+        }
+        
+      }
+    }
     if (ev.which == 1 && !obj.noClick) {
-      var clickTd = this.squares[obj.pos[0]][obj.pos[1]];
       if (clickTd.type == 'number') {
         this.allNum --;
         // console.log(This.allNum);
@@ -164,21 +232,7 @@ class Mines {
           this.timeStart = true;
           this.time();
         }
-        function clickTdBgc(clickTd, obj) {  
-          if (clickTd.x % 2 == 0) {
-            if (clickTd.y % 2 == 0) {
-              obj.style.backgroundColor = '#E5C29F';
-            }else {
-              obj.style.backgroundColor = '#D7B899';
-            }
-          }else {
-            if (clickTd.y % 2 == 0) {
-              obj.style.backgroundColor = '#D7B899';
-            }else {
-              obj.style.backgroundColor = '#E5C29F';
-            }
-          }
-        }
+        
         clickTdBgc(clickTd, obj);
         obj.classList.add('clickHover');
         obj.innerHTML = clickTd.value;
@@ -188,31 +242,7 @@ class Mines {
         if (clickTd.value == 0) {
           obj.classList.remove('tdHover');
           obj.innerHTML = '';
-          function getTdAround(square) {  
-            let squareAround = This.getAround(square);
-            for (let i = 0; i < squareAround.length; i ++) {
-              let x = squareAround[i][0],
-                  y = squareAround[i][1];
-              if (!This.tdDoms[x][y].flag) { 
-                This.tdDoms[x][y].flag = true;
-                if (This.squares[x][y].value == 0) {
-                  This.allNum --;
-                  This.tdDoms[x][y].classList.remove('tdHover');
-                  This.tdDoms[x][y].classList.remove('clickHover');
-                  getTdAround(This.squares[x][y]);
-                  clickTdBgc(This.squares[x][y], This.tdDoms[x][y]);
-                } else if (This.squares[x][y].value > 0) {
-                  This.allNum --;
-                  This.tdDoms[x][y].classList.add('clickHover');
-                  This.tdDoms[x][y].innerHTML = This.squares[x][y].value;
-                  This.tdDoms[x][y].classList.add(color[This.squares[x][y].value - 1]);
-                  clickTdBgc(This.squares[x][y], This.tdDoms[x][y]);
-                }
-                // console.log(This.allNum);
-                This.tdDoms[x][y].classList.remove('placeFlag');
-              }
-            }
-          }
+          
           getTdAround(clickTd);
         }
       }else {
@@ -234,6 +264,32 @@ class Mines {
           This.gameOver();
         },400);  
       }
+      if (this.allNum == this.mineNumber) {
+        this.gameOver();
+      }
+    }
+    if (ev.which == 2 && obj.flag && clickTd.value) {
+      let clickTdAround = This.getAround(clickTd);
+      let mineNumber = 0;
+      let count = 0;
+      for (let i = 0; i < clickTdAround.length; i ++) {
+        let x = clickTdAround[i][0],
+            y = clickTdAround[i][1];
+        if (This.squares[x][y].type == 'mine'){
+          mineNumber ++;
+          if (This.tdDoms[x][y].classList.contains('placeFlag')) {
+            count ++;
+          } else {
+            count --;
+          }
+        }
+
+      }
+      if (count == mineNumber) {
+        getTdAround(clickTd, true)
+      }
+
+
       if (this.allNum == this.mineNumber) {
         this.gameOver();
       }
